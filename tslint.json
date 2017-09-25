@@ -1,0 +1,19 @@
+{
+    "rulesDirectory": [
+        "node_modules/tslint-microsoft-contrib"
+    ],
+    "extends": "tslint-microsoft-contrib",
+    "rules": {
+        "completed-docs": false,
+        "export-name": false,
+        "function-name": false,
+        "import-name": false,
+        "max-classes-per-file": [20],
+        "missing-jsdoc": false,
+        "newline-before-return": false,
+        "no-default-export": false,
+        "no-invalid-this": false,
+        "no-relative-imports": false,
+        "no-unsafe-any": false
+    }
+}

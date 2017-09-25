@@ -1,0 +1,47 @@
+{
+    "name": "json-inspect",
+    "version": "1.0.0",
+    "description": "A simple query utility for JSON",
+    "main": "index.js",
+    "scripts": {
+        "clean": "rimraf -g './{,!(node_modules)/**/}*.js'",
+        "tslint": "tslint -c ./tslint.json --project .",
+        "tsc": "tsc --pretty",
+        "tsc:watch": "npm run tsc -- --watch --diagnostics",
+        "jasmine": "jasmine",
+        "lint": "npm run tslint",
+        "prebuild": "npm run lint",
+        "build": "npm run clean & npm run tsc",
+        "pretest": "npm run build",
+        "test": "npm run jasmine",
+        "watch": "npm run tsc:watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mtraynham/json-inspect.git"
+    },
+    "keywords": [
+        "json",
+        "query",
+        "inspect",
+        "data"
+    ],
+    "author": "Matt Traynham",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/mtraynham/json-inspect/issues"
+    },
+    "homepage": "https://github.com/mtraynham/json-inspect#README",
+    "dependencies": {
+        "chevrotain": "^0"
+    },
+    "devDependencies": {
+        "@types/rimraf": "^2",
+        "@types/jasmine": "^2",
+        "jasmine": "^2",
+        "rimraf": "^2",
+        "typescript": "^2",
+        "tslint": "^5",
+        "tslint-microsoft-contrib": "^5"
+    }
+}
