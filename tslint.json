@@ -11,9 +11,9 @@
         "max-classes-per-file": [20],
         "missing-jsdoc": false,
         "newline-before-return": false,
+        "no-any": false,
         "no-default-export": false,
-        "no-invalid-this": false,
         "no-relative-imports": false,
-        "no-unsafe-any": false
+        "no-suspicious-comment": false
     }
 }

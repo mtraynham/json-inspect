@@ -1,19 +1,12 @@
-import {ILexingResult, Lexer} from 'chevrotain';
+import {ILexingResult} from 'chevrotain';
 import lexer from './lexer';
 import Parser from './Parser';
-
-export interface IJsonInspectResult {
-    lexer: Lexer;
-    lexingResult: ILexingResult;
-    parser: Parser;
-    parserResult: Object;
-}
+import {IJsonInspectResult} from './typings';
 
 const parser: Parser = new Parser();
 export default function jsonInspect (text: string): IJsonInspectResult  {
     const lexingResult: ILexingResult = lexer.tokenize(text);
-    parser.input = lexingResult.tokens;
-    const parserResult: Object = parser.inspect();
+    const parserResult: Object = parser.parse(lexingResult.tokens);
     return {
         lexer,
         lexingResult,

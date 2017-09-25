@@ -14,52 +14,58 @@ import allTokens, {
 } from './tokens';
 
 export default class Parser extends ChevrotainParser {
-    public inspect: IRule = this.RULE('inspect', () =>
+    private inspect: IRule = this.RULE('inspect', (): void => {
         this.OR([
-            {ALT: (): IRule => this.SUBRULE(this.object)},
-            {ALT: (): IRule => this.SUBRULE(this.array)}
-        ]));
-    private object: IRule = this.RULE('object', () => {
+            {ALT: (): void => { this.SUBRULE(this.object); }},
+            {ALT: (): void => { this.SUBRULE(this.array); }}
+        ]);
+    });
+    private object: IRule = this.RULE('object', (): void => {
         this.CONSUME(LCurly);
-        this.OPTION(() => {
+        this.OPTION((): void => {
             this.SUBRULE(this.objectItem);
-            this.MANY(() => {
+            this.MANY((): void => {
                 this.CONSUME(Comma);
                 this.SUBRULE2(this.objectItem);
             });
         });
         this.CONSUME(RCurly);
     });
-    private objectItem: IRule = this.RULE('objectItem', () => {
+    private objectItem: IRule = this.RULE('objectItem', (): void => {
         this.CONSUME(StringLiteral);
         this.CONSUME(Colon);
-        // this.CONSUME(this.value);
+        this.SUBRULE(this.value);
     });
-    private array: IRule = this.RULE('array', () => {
+    private array: IRule = this.RULE('array', (): void => {
         this.CONSUME(LSquare);
-        this.OPTION(() => {
+        this.OPTION((): void => {
             this.SUBRULE(this.value);
-            this.MANY(() => {
+            this.MANY((): void => {
                 this.CONSUME(Comma);
                 this.SUBRULE2(this.value);
             });
         });
         this.CONSUME(RSquare);
     });
-    private value: IRule = this.RULE('value', () =>
+    private value: IRule = this.RULE('value', (): void => {
         this.OR([
-            {ALT: (): IRule | IToken => this.CONSUME(StringLiteral)},
-            {ALT: (): IRule | IToken => this.CONSUME(NumberLiteral)},
-            {ALT: (): IRule | IToken => this.SUBRULE(this.object)},
-            {ALT: (): IRule | IToken => this.SUBRULE(this.array)},
-            {ALT: (): IRule | IToken => this.CONSUME(True)},
-            {ALT: (): IRule | IToken => this.CONSUME(False)},
-            {ALT: (): IRule | IToken => this.CONSUME(Null)}
-        ])
-    );
+            {ALT: (): void => { this.CONSUME(StringLiteral); }},
+            {ALT: (): void => { this.CONSUME(NumberLiteral); }},
+            {ALT: (): void => { this.SUBRULE(this.object); }},
+            {ALT: (): void => { this.SUBRULE(this.array); }},
+            {ALT: (): void => { this.CONSUME(True); }},
+            {ALT: (): void => { this.CONSUME(False); }},
+            {ALT: (): void => { this.CONSUME(Null); }}
+        ]);
+    });
 
-    constructor (input: IToken[] = []) {
-        super (input, allTokens);
+    constructor () {
+        super ([], allTokens);
         Parser.performSelfAnalysis(this);
+    }
+
+    public parse (tokens: IToken[]): Object {
+        this.input = tokens;
+        return <Object> <any> this.inspect();
     }
 }

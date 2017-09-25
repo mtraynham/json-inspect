@@ -6,8 +6,8 @@
             "es2016",
             "dom"
         ],
-        "target": "es2015",
-        "module": "es2015",
+        "target": "es5",
+        "module": "commonjs",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true
     }
