@@ -9,7 +9,7 @@ export class False extends Token {
 }
 
 export class Null extends Token {
-    public static PATTERN: RegExp = /true/;
+    public static PATTERN: RegExp = /null/;
 }
 
 export class LCurly extends Token {
