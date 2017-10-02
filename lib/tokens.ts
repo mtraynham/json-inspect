@@ -56,6 +56,14 @@ export class And extends Token {
     public static PATTERN: RegExp = /([aA][nN][dD]|&&?)/;
 }
 
+export class Equal extends Token {
+    public static PATTERN: RegExp = /==?=?/;
+}
+
+export class NotEqual extends Token {
+    public static PATTERN: RegExp = /!==?/;
+}
+
 export class GreaterThan extends Token {
     public static PATTERN: RegExp = />[^=]/;
 }
@@ -72,12 +80,12 @@ export class LessThanOrEqual extends Token {
     public static PATTERN: RegExp = /<=/;
 }
 
-export class Equal extends Token {
-    public static PATTERN: RegExp = /==?=?/;
+export class Matches extends Token {
+    public static PATTERN: RegExp = /~/;
 }
 
-export class NotEqual extends Token {
-    public static PATTERN: RegExp = /!==?/;
+export class NotMatches extends Token {
+    public static PATTERN: RegExp = /!~/;
 }
 
 export class SelectAll extends Token {
@@ -104,6 +112,12 @@ export class Integer extends Token {
 
 export class NumberLiteral extends Token {
     public static PATTERN: RegExp = /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/;
+}
+
+export class RegExpLiteral extends Token {
+    // https://stackoverflow.com/a/17843773
+    // tslint:disable-next-line max-line-length
+    public static PATTERN: RegExp = /\/((?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*])+)\/((?:g(?:im?|mi?)?|i(?:gm?|mg?)?|m(?:gi?|ig?)?)?)/;
 }
 
 export class WhiteSpace extends Token {
