@@ -18,8 +18,8 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.1.tgz#b683eb60be358304ef146f5775db4c0e3696a550"
 
 "@types/node@*":
-  version "8.0.30"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.30.tgz#aa3c42946fc6357737eb215349fe728b38679d05"
+  version "8.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
 
 "@types/rimraf@^2":
   version "2.0.2"
@@ -66,8 +66,8 @@ chalk@^1.1.3:
     supports-color "^2.0.0"
 
 chevrotain@^0:
-  version "0.32.1"
-  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-0.32.1.tgz#8815f85c3f1c01bbfea225b689a73c1e7cea0b8b"
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-0.33.0.tgz#76881b4f511bdfb79db3e18d7a84145633b59d5e"
 
 colors@^1.1.2:
   version "1.1.2"
@@ -221,14 +221,14 @@ tsutils@^1.4.0:
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-1.9.1.tgz#b9f9ab44e55af9681831d5f28d0aeeaf5c750cb0"
 
 tsutils@^2.8.1:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.8.2.tgz#2c1486ba431260845b0ac6f902afd9d708a8ea6a"
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.10.0.tgz#ae94511df2656eb06e4424056fba5c388887040c"
   dependencies:
     tslib "^1.7.1"
 
 typescript@^2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
 wrappy@1:
   version "1.0.2"
