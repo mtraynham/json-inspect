@@ -1,13 +1,13 @@
 import jsonInspect from '../index';
-import {IJsonInspectResult} from '../lib/typings';
+import {IJsonInspectResult} from './typings';
 
 describe('jsonInspect', () => {
     describe ('Parser', () => {
         function validate ({name, inputText}: {name: string, inputText: string}): void {
-            it (name, () => {
+            test (name, (): void => {
                 const jsonInspectResult: IJsonInspectResult = jsonInspect(inputText);
-                expect(jsonInspectResult.lexingResult.errors.length).toBe(0, jsonInspectResult.lexingResult.errors);
-                expect(jsonInspectResult.parser.errors.length).toBe(0, jsonInspectResult.parser.errors);
+                expect(jsonInspectResult.lexingResult.errors.length).toBe(0);
+                expect(jsonInspectResult.parser.errors.length).toBe(0);
             });
         }
         const tests: {name: string, inputText: string}[] = [
@@ -21,9 +21,9 @@ describe('jsonInspect', () => {
             {name: 'simple selector', inputText: 'items[*name!~/^t/i].name'},
             {name: 'nested selector', inputText: 'items[*name!~test].name'},
             {name: 'function selector', inputText: 'items[*name!~{param}].name'},
-            {name: 'function selector', inputText: ' items[id=1]\n  .name '},
-            {name: 'function selector', inputText: ' items[id=1]\n  .name:not '},
-            {name: 'function selector', inputText: '.title|.value.name'},
+            {name: 'whitespace', inputText: ' items[id=1]\n  .name '},
+            {name: 'whitespace 2', inputText: ' items[id=1]\n  .name:not '},
+            {name: 'OR operator', inputText: '.title|.value.name'},
             {name: 'function selector', inputText: 'items[id=?].name'},
             {name: 'function selector', inputText: 'items[parent_id={workitem.id}].name'},
             {name: 'function selector', inputText: '.name:titleize'},

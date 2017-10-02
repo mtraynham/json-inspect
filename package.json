@@ -7,14 +7,12 @@
         "clean": "rimraf -g './{,!(node_modules)/**/}*.js'",
         "tslint": "tslint -c ./tslint.json --project .",
         "tsc": "tsc --pretty",
-        "tsc:watch": "npm run tsc -- --watch --diagnostics",
-        "jasmine": "jasmine",
+        "jest": "jest",
         "lint": "npm run tslint",
         "prebuild": "npm run lint",
         "build": "npm run clean & npm run tsc",
-        "pretest": "npm run build",
-        "test": "npm run jasmine",
-        "watch": "npm run tsc:watch"
+        "test": "npm run jest",
+        "watch": "npm run test -- --watch"
     },
     "repository": {
         "type": "git",
@@ -37,11 +35,24 @@
     },
     "devDependencies": {
         "@types/rimraf": "^2",
-        "@types/jasmine": "^2",
-        "jasmine": "^2",
+        "@types/jest": "^21",
+        "jest": "^21",
         "rimraf": "^2",
-        "typescript": "^2",
+        "ts-jest": "^21",
         "tslint": "^5",
-        "tslint-microsoft-contrib": "^5"
+        "tslint-microsoft-contrib": "^5",
+        "typescript": "^2"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+        },
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "json"
+        ]
     }
 }

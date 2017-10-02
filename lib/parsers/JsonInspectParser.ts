@@ -1,67 +1,20 @@
-import {IRule, IToken, Parser as ChevrotainParser} from 'chevrotain';
-import * as Tokens from './tokens';
+import {IRule, IToken} from 'chevrotain';
+import * as Tokens from '../tokens';
+import JsonParser from './JsonParser';
 
-abstract class JsonParser extends ChevrotainParser {
-    // json
-    //      object | array
-    public json: IRule = this.RULE('json', (): void => {
-        this.OR([
-            {ALT: (): void => { this.SUBRULE(this.object); }},
-            {ALT: (): void => { this.SUBRULE(this.array); }}
-        ]);
-    });
-    // object
-    //      LCurly objectItem? (Comma objectItem)* RCurly
-    protected object: IRule = this.RULE('object', (): void => {
-        this.CONSUME(Tokens.LCurly);
-        this.OPTION((): void => {
-            this.SUBRULE(this.objectItem);
-            this.MANY((): void => {
-                this.CONSUME(Tokens.Comma);
-                this.SUBRULE2(this.objectItem);
-            });
-        });
-        this.CONSUME(Tokens.RCurly);
-    });
-    // objectItem
-    //      StringLiteral Colon value
-    protected objectItem: IRule = this.RULE('objectItem', (): void => {
-        this.CONSUME(Tokens.StringLiteral);
-        this.CONSUME(Tokens.Colon);
-        this.SUBRULE(this.value);
-    });
-    // array
-    //      LSquare value? (Comma value)* RSqaure
-    protected array: IRule = this.RULE('array', (): void => {
-        this.CONSUME(Tokens.LSquare);
-        this.OPTION((): void => {
-            this.SUBRULE(this.value);
-            this.MANY((): void => {
-                this.CONSUME(Tokens.Comma);
-                this.SUBRULE2(this.value);
-            });
-        });
-        this.CONSUME(Tokens.RSquare);
-    });
-    // value
-    //      StringLiteral | NumberLiteral | object | array | True | False | null
-    protected value: IRule = this.RULE('value', (): void => {
-        this.OR([
-            {ALT: (): void => { this.CONSUME(Tokens.StringLiteral); }},
-            {ALT: (): void => { this.CONSUME(Tokens.NumberLiteral); }},
-            {ALT: (): void => { this.SUBRULE(this.object); }},
-            {ALT: (): void => { this.SUBRULE(this.array); }},
-            {ALT: (): void => { this.CONSUME(Tokens.True); }},
-            {ALT: (): void => { this.CONSUME(Tokens.False); }},
-            {ALT: (): void => { this.CONSUME(Tokens.Null); }}
-        ]);
-    });
-}
-
-export default class Parser extends JsonParser {
+export default class JsonInspectParser extends JsonParser {
     // inspect
+    //      inspectStatement (Or inspectStatement)*
+    public inspect: IRule<void> = this.RULE('inspect', (): void => {
+        this.SUBRULE(this.inspectStatement);
+        this.MANY((): void => {
+            this.CONSUME(Tokens.Or);
+            this.SUBRULE2(this.inspectStatement);
+        });
+    });
+    // inspectStatement
     //      (select | selectFilter)*
-    public inspect: IRule = this.RULE('inspect', (): void => {
+    public inspectStatement: IRule<void> = this.RULE('inspectStatement', (): void => {
         this.MANY((): void => {
             this.OR([
                 {ALT: (): void => { this.SUBRULE(this.select); }},
@@ -71,7 +24,7 @@ export default class Parser extends JsonParser {
     });
     // select
     //      selectValue | selectFunction
-    private select: IRule = this.RULE('select', (): void => {
+    private select: IRule<void> = this.RULE('select', (): void => {
         this.OR([
             {ALT: (): void => { this.SUBRULE(this.selectValue); }},
             {ALT: (): void => { this.SUBRULE(this.selectFunction); }}
@@ -79,7 +32,7 @@ export default class Parser extends JsonParser {
     });
     // selectValue
     //      ((Dot Identifier) | Identifier) (Dot Identifier)*
-    private selectValue: IRule = this.RULE('selectValue', (): void => {
+    private selectValue: IRule<void> = this.RULE('selectValue', (): void => {
         this.OR([
             {ALT: (): void => { this.CONSUME(Tokens.Identifier); }},
             {ALT: (): void => {
@@ -94,20 +47,20 @@ export default class Parser extends JsonParser {
     });
     // selectFunction
     //      Colon Identifier functionArguments?
-    private selectFunction: IRule = this.RULE('selectFunction', (): void => {
+    private selectFunction: IRule<void> = this.RULE('selectFunction', (): void => {
         this.CONSUME(Tokens.Colon);
         this.CONSUME(Tokens.Identifier);
         this.OPTION((): void => { this.SUBRULE(this.functionArguments); });
     });
     // functionInvocation
     //      Identifier functionArguments
-    private functionInvocation: IRule = this.RULE('functionInvocation', (): void => {
+    private functionInvocation: IRule<void> = this.RULE('functionInvocation', (): void => {
         this.CONSUME(Tokens.Identifier);
         this.SUBRULE(this.functionArguments);
     });
     // functionArguments
     //      LParen (functionArgument (Comma functionArgument)*)? RParen
-    private functionArguments: IRule = this.RULE('functionArguments', (): void => {
+    private functionArguments: IRule<void> = this.RULE('functionArguments', (): void => {
         this.CONSUME(Tokens.LParen);
         this.OPTION((): void => {
             this.SUBRULE(this.functionArgument);
@@ -120,7 +73,7 @@ export default class Parser extends JsonParser {
     });
     // functionArgument
     //      functionInvocation | value
-    private functionArgument: IRule = this.RULE('functionArgument', (): void => {
+    private functionArgument: IRule<void> = this.RULE('functionArgument', (): void => {
         this.OR([
             {ALT: (): void => { this.SUBRULE(this.functionInvocation); }},
             {ALT: (): void => { this.SUBRULE(this.value); }}
@@ -128,7 +81,7 @@ export default class Parser extends JsonParser {
     });
     // selectFilter
     //      LSquare (Integer | selectArrayFilter) RSquare
-    private selectFilter: IRule = this.RULE('selectFilter', (): void => {
+    private selectFilter: IRule<void> = this.RULE('selectFilter', (): void => {
         this.CONSUME(Tokens.LSquare);
         this.OR([
             {ALT: (): void => { this.CONSUME(Tokens.Integer); }},
@@ -137,27 +90,30 @@ export default class Parser extends JsonParser {
         this.CONSUME(Tokens.RSquare);
     });
     // selectArrayFilter
-    //      selectAll? (filterArgument (booleanOperator filterArgument)*)?
-    private selectArrayFilter: IRule = this.RULE('selectArrayFilter', (): void => {
+    //      selectAll? filterArguments?
+    private selectArrayFilter: IRule<void> = this.RULE('selectArrayFilter', (): void => {
         this.OPTION((): void => { this.CONSUME(Tokens.SelectAll); });
-        this.OPTION2((): void => {
-            this.SUBRULE(this.filterArgument);
-            this.MANY((): void => {
-                this.SUBRULE(this.booleanOperator);
-                this.SUBRULE2(this.filterArgument);
-            });
+        this.OPTION2((): void => { this.SUBRULE(this.filterArguments); });
+    });
+    // filterArguments
+    //      filterArgument (booleanOperator filterArgument)*
+    private filterArguments: IRule<void> = this.RULE('filterArguments', (): void => {
+        this.SUBRULE(this.filterArgument);
+        this.MANY((): void => {
+            this.SUBRULE(this.booleanOperator);
+            this.SUBRULE2(this.filterArgument);
         });
     });
     // filterArgument
     //      selectValue comparisonOperator value
-    private filterArgument: IRule = this.RULE('filterArgument', (): void => {
+    private filterArgument: IRule<void> = this.RULE('filterArgument', (): void => {
         this.SUBRULE(this.selectValue);
         this.SUBRULE(this.comparisonOperator);
         this.SUBRULE(this.filterValue);
     });
     // booleanOperator
     //      Or | And
-    private booleanOperator: IRule = this.RULE('booleanOperator', (): void => {
+    private booleanOperator: IRule<void> = this.RULE('booleanOperator', (): void => {
         this.OR([
             {ALT: (): void => { this.CONSUME(Tokens.Or); }},
             {ALT: (): void => { this.CONSUME(Tokens.And); }}
@@ -165,7 +121,7 @@ export default class Parser extends JsonParser {
     });
     // comparisonOperator
     //      Equal | NotEqual | LessThan | LessThanOrEqual | GreaterThan | GreaterThanOrEqual | Matches | NotMatches
-    private comparisonOperator: IRule = this.RULE('comparisonOperator', (): void => {
+    private comparisonOperator: IRule<void> = this.RULE('comparisonOperator', (): void => {
         this.OR([
             {ALT: (): void => { this.CONSUME(Tokens.Equal); }},
             {ALT: (): void => { this.CONSUME(Tokens.NotEqual); }},
@@ -178,24 +134,24 @@ export default class Parser extends JsonParser {
         ]);
     });
     // filterValue
-    //      StringLiteralNoQuotes | NumberLiteral | True | False | null | RegExpLiteral
-    private filterValue: IRule = this.RULE('filterValue', (): void => {
+    //      RegExpLiteral | StringLiteral | NumberLiteral | True | False | null
+    private filterValue: IRule<void> = this.RULE('filterValue', (): void => {
         this.OR([
+            {ALT: (): void => { this.CONSUME(Tokens.RegExpLiteral); }},
             {ALT: (): void => { this.CONSUME(Tokens.StringLiteral); }},
             {ALT: (): void => { this.CONSUME(Tokens.NumberLiteral); }},
             {ALT: (): void => { this.CONSUME(Tokens.True); }},
             {ALT: (): void => { this.CONSUME(Tokens.False); }},
-            {ALT: (): void => { this.CONSUME(Tokens.Null); }},
-            {ALT: (): void => { this.CONSUME(Tokens.RegExpLiteral); }}
+            {ALT: (): void => { this.CONSUME(Tokens.Null); }}
         ]);
     });
 
     constructor () {
-        super ([], Object.values(Tokens));
-        Parser.performSelfAnalysis(this);
+        super(Object.values(Tokens), {outputCst: true});
+        JsonInspectParser.performSelfAnalysis(this);
     }
 
-    public parse (tokens: IToken[]): Object {
+    public execute (tokens: IToken[]): Object {
         this.input = tokens;
         return <Object> <any> this.inspect();
     }
