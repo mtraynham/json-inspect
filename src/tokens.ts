@@ -48,6 +48,10 @@ export class Dot extends Token {
     public static PATTERN: RegExp = /\./;
 }
 
+export class Question extends Token {
+    public static PATTERN: RegExp = /\?/;
+}
+
 export class Or extends Token {
     public static PATTERN: RegExp = /([oO][rR]|\|\|?)/;
 }
@@ -89,7 +93,7 @@ export class NotMatches extends Token {
 }
 
 export class SelectAll extends Token {
-    public static PATTERN: RegExp = /\*[^*]/;
+    public static PATTERN: RegExp = /\*/;
 }
 
 export class SelectAllExtended extends Token {

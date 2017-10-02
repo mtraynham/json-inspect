@@ -1,2 +1,2 @@
-import jsonInspect from './lib/index';
+import jsonInspect from './src/index';
 export default jsonInspect;
