@@ -1,4 +1,4 @@
-import {Lexer, Token, TokenConstructor} from 'chevrotain';
+import {Lexer, Token} from 'chevrotain';
 
 export class True extends Token {
     public static PATTERN: RegExp = /true/;
@@ -48,6 +48,14 @@ export class Dot extends Token {
     public static PATTERN: RegExp = /\./;
 }
 
+export class Or extends Token {
+    public static PATTERN: RegExp = /([oO][rR]|\|\|?)/;
+}
+
+export class And extends Token {
+    public static PATTERN: RegExp = /([aA][nN][dD]|&&?)/;
+}
+
 export class GreaterThan extends Token {
     public static PATTERN: RegExp = />[^=]/;
 }
@@ -65,7 +73,7 @@ export class LessThanOrEqual extends Token {
 }
 
 export class Equal extends Token {
-    public static PATTERN: RegExp = /==?/;
+    public static PATTERN: RegExp = /==?=?/;
 }
 
 export class NotEqual extends Token {
@@ -90,6 +98,10 @@ export class StringLiteral extends Token {
     public static PATTERN: RegExp = /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/;
 }
 
+export class Integer extends Token {
+    public static PATTERN: RegExp = /\d+/;
+}
+
 export class NumberLiteral extends Token {
     public static PATTERN: RegExp = /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/;
 }
@@ -99,31 +111,3 @@ export class WhiteSpace extends Token {
     public static GROUP: string = Lexer.SKIPPED;
     public static LINE_BREAKS: boolean = true;
 }
-
-const allTokens: TokenConstructor[] = [
-    True,
-    False,
-    Null,
-    LCurly,
-    RCurly,
-    LSquare,
-    RSquare,
-    LParen,
-    RParen,
-    Comma,
-    Colon,
-    Dot,
-    GreaterThan,
-    GreaterThanOrEqual,
-    LessThan,
-    LessThanOrEqual,
-    Equal,
-    NotEqual,
-    SelectAll,
-    SelectAllExtended,
-    Identifier,
-    StringLiteral,
-    NumberLiteral,
-    WhiteSpace
-];
-export default allTokens;

@@ -1,5 +1,5 @@
 import {Lexer} from 'chevrotain';
-import allTokens from './tokens';
+import * as Tokens from './tokens';
 
-const lexer: Lexer = new Lexer(allTokens);
+const lexer: Lexer = new Lexer(Object.values(Tokens));
 export default lexer;
