@@ -4,10 +4,9 @@
     "description": "A simple query utility for JSON",
     "main": "index.js",
     "scripts": {
-        "clean": "rimraf -g './{,!(node_modules)/**/}*.js'",
         "tslint": "tslint -c ./tslint.json --project .",
-        "tsc": "tsc --pretty",
-        "jest": "jest",
+        "jasmine": "jasmine",
+        "webpack": "webpack --config webpack.config.ts",
         "lint": "npm run tslint",
         "prebuild": "npm run lint",
         "build": "npm run clean & npm run tsc",
@@ -35,29 +34,42 @@
         "chevrotain": "^0"
     },
     "devDependencies": {
-        "@types/jest": "^21",
+        "@types/karma": "^1",
+        "@types/karma-webpack": "^2",
+        "@types/jasmine": "^2",
         "@types/open": "^0",
         "@types/rimraf": "^2",
         "@types/tmp": "^0",
-        "jest": "^21",
-        "rimraf": "^2",
+        "@types/webpack": "^3",
+        "@types/webpack-env": "^1",
+        "@types/webpack-merge": "^4",
+        "awesome-typescript-loader": "^3",
+        "babel-core": "^6",
+        "babel-loader": "^7",
+        "babel-plugin-transform-class-properties": "^6",
+        "babel-preset-env": "^1",
+        "istanbul-instrumenter-loader": "^3",
+        "karma": "^1",
+        "karma-chrome-launcher": "^2",
+        "karma-coverage": "^1",
+        "karma-jasmine": "^1",
+        "karma-jasmine-html-reporter": "^0",
+        "karma-remap-coverage": "^0",
+        "karma-sourcemap-loader": "^0",
+        "karma-spec-reporter": "^0",
+        "karma-webpack": "^2",
+        "jasmine-core": "^2",
         "open": "^0",
+        "rimraf": "^2",
         "tmp": "^0",
-        "ts-jest": "^21",
+        "ts-node": "^3",
         "tslint": "^5",
+        "tslint-loader": "wbuchwalter/tslint-loader#78/head",
         "tslint-microsoft-contrib": "^5",
-        "typescript": "^2"
-    },
-    "jest": {
-        "transform": {
-            "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-        },
-        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "json"
-        ]
+        "typescript": "^2",
+        "webpack": "^3",
+        "webpack-bundle-analyzer": "^2",
+        "webpack-dev-server": "^2",
+        "webpack-merge": "^4"
     }
 }

@@ -1,5 +1,12 @@
-*.spec.[ts|js]
+**/*.spec.[ts|js]
+webpack(,.*).config.ts
+.babelrc
+.gitignore
+.npmignore
 .travis.yml
+json.d.ts
+karma.conf.ts
+LICENSE_BANNER.ts
 tsconfig.json
 tslint.json
 yarn.lock
