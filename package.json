@@ -12,7 +12,8 @@
         "prebuild": "npm run lint",
         "build": "npm run clean & npm run tsc",
         "test": "npm run jest",
-        "watch": "npm run test -- --watch"
+        "watch": "npm run test -- --watch",
+        "diagram": "npm run build && node ./src/utils/diagrams/jsonInspect"
     },
     "repository": {
         "type": "git",
@@ -34,10 +35,14 @@
         "chevrotain": "^0"
     },
     "devDependencies": {
-        "@types/rimraf": "^2",
         "@types/jest": "^21",
+        "@types/open": "^0",
+        "@types/rimraf": "^2",
+        "@types/tmp": "^0",
         "jest": "^21",
         "rimraf": "^2",
+        "open": "^0",
+        "tmp": "^0",
         "ts-jest": "^21",
         "tslint": "^5",
         "tslint-microsoft-contrib": "^5",
