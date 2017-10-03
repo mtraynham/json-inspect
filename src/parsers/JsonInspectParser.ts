@@ -78,7 +78,7 @@ export default class JsonInspectParser extends JsonParser {
     private functionArgument: IRule<void> = this.RULE('functionArgument', (): void => {
         this.OR([
             {ALT: (): void => { this.SUBRULE(this.functionInvocation); }},
-            {ALT: (): void => { this.SUBRULE(this.value); }}
+            {ALT: (): void => { this.SUBRULE(this.filterValue); }}
         ]);
     });
     // selectFilter
@@ -139,18 +139,24 @@ export default class JsonInspectParser extends JsonParser {
         ]);
     });
     // filterValue
-    //      RegExpLiteral | StringLiteral | NumberLiteral | True | False | null
+    //      RegExpLiteral | Identifier | String | Integer | value
     private filterValue: IRule<void> = this.RULE('filterValue', (): void => {
         this.OR([
+            {ALT: (): void => { this.CONSUME(Tokens.RegExpLiteral); }},
             {ALT: (): void => { this.CONSUME(Tokens.Identifier); }},
-            {ALT: (): void => { this.CONSUME(Tokens.StringLiteral); }},
+            {ALT: (): void => { this.CONSUME(Tokens.String); }},
             {ALT: (): void => { this.CONSUME(Tokens.Integer); }},
-            {ALT: (): void => { this.CONSUME(Tokens.NumberLiteral); }},
-            {ALT: (): void => { this.CONSUME(Tokens.True); }},
-            {ALT: (): void => { this.CONSUME(Tokens.False); }},
-            {ALT: (): void => { this.CONSUME(Tokens.Null); }},
-            {ALT: (): void => { this.CONSUME(Tokens.RegExpLiteral); }}
+            // {ALT: (): void => { this.SUBRULE(this.value); }},
+            {ALT: (): void => { this.SUBRULE(this.nestedInspect); }}
         ]);
+    });
+
+    // nestedInspect
+    //      LCurly Inspect? RCurly
+    private nestedInspect: IRule<void> = this.RULE('nestedInspect', (): void => {
+        this.CONSUME(Tokens.LCurly);
+        this.OPTION((): void => { this.SUBRULE(this.inspectStatement); });
+        this.CONSUME(Tokens.RCurly);
     });
 
     constructor () {

@@ -10,7 +10,7 @@ interface IJsonInspectTest {
 
 describe('jsonInspect', () => {
     function validate ({name, inputText, expectedTokens}: IJsonInspectTest): void {
-        test (name, (): void => {
+        it (name, (): void => {
             const {
                 lexingResult,
                 parser

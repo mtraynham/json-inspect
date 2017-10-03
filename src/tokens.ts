@@ -81,7 +81,7 @@ export class NotEqual extends Token {
 }
 
 export class GreaterThan extends Token {
-    public static PATTERN: RegExp = />[^=]/;
+    public static PATTERN: RegExp = />/;
 }
 
 export class GreaterThanOrEqual extends Token {
@@ -89,7 +89,7 @@ export class GreaterThanOrEqual extends Token {
 }
 
 export class LessThan extends Token {
-    public static PATTERN: RegExp = /<[^=]/;
+    public static PATTERN: RegExp = /</;
 }
 
 export class LessThanOrEqual extends Token {
@@ -108,6 +108,10 @@ export class Identifier extends Token {
     // https://stackoverflow.com/a/2008444
     // https://github.com/SAP/chevrotain/blob/master/docs/resolving_lexer_errors.md#-unexpected-regexp-anchor-error
     public static PATTERN: RegExp = /[_\$a-zA-Z\xA0-\uFFFF][_\$a-zA-Z0-9\xA0-\uFFFF]*/;
+}
+
+export class String extends Token {
+    public static PATTERN: RegExp = /\w+/;
 }
 
 export class StringLiteral extends Token {
@@ -135,14 +139,38 @@ export class WhiteSpace extends Token {
 }
 
 // Order matters - current preferences
-// - Keep keywords/operands above others
-// - Keep select glob above star
+// - Keep whitespace first
+// - Keep more specific tokens above others
+// - Keep Integer above NumberLiteral
+// - Keep Glob above Star
+// - Keep NotEqual above Equal
+// - Keep GreaterThanOrEqual above GreaterThan
+// - Keep LessThanOrEqual above LessThan
+// - Keep NotMatches above Matches
 // - Keep RegexLiteral before Slash
-// - Keep whitespace last
+// - Keep String last, anything else can be a string
 const allTokens: TokenConstructor[] = [
+    WhiteSpace,
+    RegExpLiteral,
+    Identifier,
+    StringLiteral,
+    Integer,
+    NumberLiteral,
+    NotEqual,
+    Equal,
+    GreaterThanOrEqual,
+    GreaterThan,
+    LessThanOrEqual,
+    LessThan,
+    NotMatches,
+    Matches,
+    Or,
+    And,
     True,
     False,
     Null,
+    Glob,
+    Star,
     LCurly,
     RCurly,
     LSquare,
@@ -153,24 +181,7 @@ const allTokens: TokenConstructor[] = [
     Colon,
     Dot,
     Question,
-    Glob,
-    Star,
-    Or,
-    And,
-    Equal,
-    NotEqual,
-    LessThan,
-    LessThanOrEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
-    Matches,
-    NotMatches,
-    Identifier,
-    StringLiteral,
-    Integer,
-    NumberLiteral,
-    RegExpLiteral,
     Slash,
-    WhiteSpace
+    String
 ];
 export default allTokens;
