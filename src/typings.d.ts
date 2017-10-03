@@ -3,10 +3,11 @@ declare module 'chevrotain' {
     export type IRule<T> = (idxInCallingRule?: number, ...args: any[]) => T | any;
 }
 
-import {ILexingResult, Lexer, Parser} from 'chevrotain';
+import {CstNode, ILexingResult, Lexer, Parser} from 'chevrotain';
 export interface IJsonInspectResult {
     lexer: Lexer;
     lexingResult: ILexingResult;
     parser: Parser;
-    parserResult: Object;
+    cstNodes: CstNode | CstNode[];
+    jsonInspectFn (...args: any[]): any;
 }

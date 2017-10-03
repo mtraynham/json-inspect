@@ -1,4 +1,4 @@
-import {IMultiModeLexerDefinition, IParserConfig, IToken, Parser, TokenConstructor} from 'chevrotain';
+import {CstNode, IMultiModeLexerDefinition, IParserConfig, IToken, Parser, TokenConstructor} from 'chevrotain';
 
 export default abstract class ReusableChevrotainParser extends Parser {
     constructor (tokensDictionary: {[fqn: string]: TokenConstructor} | TokenConstructor[] | IMultiModeLexerDefinition,
@@ -6,5 +6,5 @@ export default abstract class ReusableChevrotainParser extends Parser {
         super ([], tokensDictionary, config);
     }
 
-    public abstract execute (tokens: IToken[]): Object;
+    public abstract execute (tokens: IToken[]): CstNode | CstNode[];
 }

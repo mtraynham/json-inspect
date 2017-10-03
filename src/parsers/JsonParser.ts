@@ -48,7 +48,9 @@ export default abstract class JsonParser extends ReusableChevrotainParser {
     //      StringLiteral | NumberLiteral | object | array | True | False | null
     protected value: IRule<void> = this.RULE('value', (): void => {
         this.OR([
+            {ALT: (): void => { this.CONSUME(Tokens.Identifier); }},
             {ALT: (): void => { this.CONSUME(Tokens.StringLiteral); }},
+            {ALT: (): void => { this.CONSUME(Tokens.Integer); }},
             {ALT: (): void => { this.CONSUME(Tokens.NumberLiteral); }},
             {ALT: (): void => { this.SUBRULE(this.object); }},
             {ALT: (): void => { this.SUBRULE(this.array); }},

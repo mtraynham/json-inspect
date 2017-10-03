@@ -1,4 +1,4 @@
-import {Lexer, Token} from 'chevrotain';
+import {Lexer, Token, TokenConstructor} from 'chevrotain';
 
 export class True extends Token {
     public static PATTERN: RegExp = /true/;
@@ -52,6 +52,18 @@ export class Question extends Token {
     public static PATTERN: RegExp = /\?/;
 }
 
+export class Slash extends Token {
+    public static PATTERN: RegExp = /\//;
+}
+
+export class Star extends Token {
+    public static PATTERN: RegExp = /\*/;
+}
+
+export class Glob extends Token {
+    public static PATTERN: RegExp = /\*\*/;
+}
+
 export class Or extends Token {
     public static PATTERN: RegExp = /([oO][rR]|\|\|?)/;
 }
@@ -92,14 +104,6 @@ export class NotMatches extends Token {
     public static PATTERN: RegExp = /!~/;
 }
 
-export class SelectAll extends Token {
-    public static PATTERN: RegExp = /\*/;
-}
-
-export class SelectAllExtended extends Token {
-    public static PATTERN: RegExp = /\*\*/;
-}
-
 export class Identifier extends Token {
     // https://stackoverflow.com/a/2008444
     // https://github.com/SAP/chevrotain/blob/master/docs/resolving_lexer_errors.md#-unexpected-regexp-anchor-error
@@ -129,3 +133,44 @@ export class WhiteSpace extends Token {
     public static GROUP: string = Lexer.SKIPPED;
     public static LINE_BREAKS: boolean = true;
 }
+
+// Order matters - current preferences
+// - Keep keywords/operands above others
+// - Keep select glob above star
+// - Keep RegexLiteral before Slash
+// - Keep whitespace last
+const allTokens: TokenConstructor[] = [
+    True,
+    False,
+    Null,
+    LCurly,
+    RCurly,
+    LSquare,
+    RSquare,
+    LParen,
+    RParen,
+    Comma,
+    Colon,
+    Dot,
+    Question,
+    Glob,
+    Star,
+    Or,
+    And,
+    Equal,
+    NotEqual,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
+    Matches,
+    NotMatches,
+    Identifier,
+    StringLiteral,
+    Integer,
+    NumberLiteral,
+    RegExpLiteral,
+    Slash,
+    WhiteSpace
+];
+export default allTokens;
